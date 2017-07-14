@@ -1,17 +1,16 @@
 import { Btn } from './button';
 
-const message = 'message';
-
 class FormGroup {
   public field: JQuery<HTMLElement>
   private input: JQuery<HTMLElement>
-  constructor(type: string, label: string) {
-    const $input = type === message ? $('<textarea>').attr('rows', '3') : $('<input>').attr({type});
-    this.input = $input
-    $input.addClass('form-control')
-    const $label = $('<label>').text(label)
-    const $fs = $('<fieldset>').addClass('form-group').append($label, $input)
-    this.field = $fs
+  constructor(type: string, label: string, value?: string) {
+    const $input = type === 'message' ? $('<textarea>').attr('rows', '3') : $('<input>').attr({type});
+    if (value) $input.val(value);
+    this.input = $input;
+    $input.addClass('form-control');
+    const $label = $('<label>').text(label);
+    const $fs = $('<fieldset>').addClass('form-group').append($label, $input);
+    this.field = $fs;
   }
 
   get data(): string {
@@ -23,10 +22,10 @@ class Form {
   public name: FormGroup
   public email: FormGroup
   public message: FormGroup
-  constructor() {
-    this.name = new FormGroup('text', 'Name')
-    this.email = new FormGroup('email', 'E-mail')
-    this.message = new FormGroup(message, 'Message')
+  constructor(name?: string, email?: string, message?: string) {
+    this.name = new FormGroup('text', 'Name', name);
+    this.email = new FormGroup('email', 'E-mail', email);
+    this.message = new FormGroup('message', 'Message', message);
   }
 }
 
@@ -49,8 +48,8 @@ export class Contact {
   public button: JQuery<HTMLElement>;
   private eventRecord: EventRecord;
 
-  constructor() {
-    this.form = new Form();
+  constructor(name?: string, email?: string, message?: string) {
+    this.form = new Form(name, email, message);
     const $form = $('<form>').append(this.form.name.field, this.form.email.field, this.form.message.field);
     this.formElement = $form;
     this.submit = this.submit.bind(this);
@@ -69,18 +68,36 @@ export class Contact {
   }
 
   private submit(): void {
-    const data: string = JSON.stringify({
-      name: this.form.name.data,
-      email: this.form.email.data,
-      message: this.form.message.data
-    })
+    const data: string = JSON.stringify(this.returnData())
 
-    $.ajax('api/v1/email/send', { 
+    $.ajax('/v1/email/send', { 
       method: 'POST', 
       contentType: 'text/plain',
       data 
     })
     .always(() => this.emit('POST_SENT'))
-    .then(() => this.emit('POST_SUCCESS'), () => this.emit('POST_ERROR'))
+    .then(() => this.emit('POST_SUCCESS'), res => this.emit('POST_FAIL', res))
+  }
+
+  public returnData(): MessageData {
+    return { 
+      name: this.form.name.data, 
+      email: this.form.email.data,
+      message: this.form.message.data
+    }
+  }
+}
+
+export interface MessageData {
+  name: string,
+  email: string,
+  message: string
+}
+
+export class ReturnBtn extends Btn{
+  constructor (fn: Function) {
+    super('Go back');
+    this.btn.addClass('btn-primary');
+    this.btn.click(fn as JQuery.EventHandler<any>)
   }
 }
