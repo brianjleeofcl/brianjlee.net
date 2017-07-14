@@ -13,6 +13,10 @@ class FormGroup {
     this.field = $fs;
   }
 
+  get valid(): boolean {
+    return true
+  }
+
   get data(): string {
     return this.input.val() as string
   }
@@ -70,9 +74,9 @@ export class Contact {
   private submit(): void {
     const data: string = JSON.stringify(this.returnData())
 
-    $.ajax('/v1/email/send', { 
+    $.ajax('/api/v1/email/send', { 
       method: 'POST', 
-      contentType: 'text/plain',
+      contentType: 'application/json',
       data 
     })
     .always(() => this.emit('POST_SENT'))

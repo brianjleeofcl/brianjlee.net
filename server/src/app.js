@@ -7,7 +7,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').load()
 
 app.disable('x-powered-by');
 
-app.use(require('morgan')('dev'), require('body-parser').text());
+app.use(require('morgan')('dev'), require('body-parser').json());
 
 if (process.env.MAINTENANCE === 'true') {
   app.use(express.static(path.join(__dirname, '..', '..', 'maintenance')))
