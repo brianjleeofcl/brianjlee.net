@@ -13,7 +13,6 @@ if (process.env.MAINTENANCE === 'true') {
   app.use(express.static(path.join(__dirname, '..', '..', 'maintenance')))
 }
 else {
-  console.log(process.env.MAINTENANCE)
   app.use(express.static(path.join(__dirname, '..', '..', 'public')))
 }
 

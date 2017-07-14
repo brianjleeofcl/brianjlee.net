@@ -75,7 +75,7 @@ export class Contact {
       message: this.form.message.data
     })
 
-    $.ajax('http://localhost:8000/v1/email/send', { 
+    $.ajax('api/v1/email/send', { 
       method: 'POST', 
       contentType: 'text/plain',
       data 
