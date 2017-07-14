@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Brian Lee</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!-- Additional CSS -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script defer src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!-- Bundled JS -->
+    <script defer src="/assets/js/index.js"></script>
+
+    <!-- LinkedIn -->
+    <script defer type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
+  </head>
+  <body>
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Brian Lee</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link contact-modal-loader" data-toggle="modal" data-target="#contact-modal">Message</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/brianjleeofcl" target="_blank">Github</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://medium.com/@brianjleeofcl" target="_blank">Medium</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://linkedin.com/in/brianjleeofcl" target="_blank">LinkedIn</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          Developer
+        </span>
+      </div>
+    </nav>
+    <header id="banner" class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-3">Brian Lee</h1>
+        <p class="lead">Developer</p>
+      </div>
+    </header>
+    <main class="container">
+      <section class="row">
+        <section class="col-12 col-lg-5">
+          <h3 class="text-center">Projects</h3>
+          <object data="/assets/img/loading.svg" class="loader mx-auto"></object>
+          <div id="projects-container" class="card-columns">
+            
+          </div>
+        </section>
+        <section class="col-12 col-md-6 col-lg-4" id="blog-wrapper">
+          <h3 class="text-center">Blog (Medium)</h3>
+          <iframe id="medium-iframe" src="http://api.brianjlee.net/v1/medium/@brianjleeofcl" alt="Medium" seamless="seamless"></iframe>
+          </div>
+        </section>
+        <section class="col-12 col-md-6 col-lg-3">
+          <h3 class="text-center">Specialty</h3>
+            <dl>
+              <dt>JavaScript</dt>
+              <dd>ES6, TypeScript, Node.js</dd>
+              <dt>Web Development</dt>
+              <dd>Frameworks: React, Angular, AngularJS</dd>
+              <dd>HTML, CSS, JQuery</dd>
+              <dt>Cloud</dt>
+              <dd>AWS, Azure</dd>
+              <dt>Object Oriented Programming</dt>
+            </dl>
+          <h3 class="text-center">Contact</h3>
+
+          <button class="btn btn-primary btn-block contact-modal-loader" id="contact-modal-btn" data-toggle="modal" data-target="#contact-modal">Message me!</button>
+          <div id="contact-modal" class="modal"></div>
+
+          <div class="LI-profile-badge mt-3 mx-auto"  data-version="v1" data-size="medium" data-locale="en_US" data-type="vertical" data-theme="light" data-vanity="brianjleeofcl"><a class="LI-simple-link" href='https://www.linkedin.com/in/brianjleeofcl?trk=profile-badge'>Linked In: Brian Lee</a></div>
+        </section>
+      </section>
+    </main>
+    <footer class="container-fluid">
+    </footer>
+  </body>
+</html>

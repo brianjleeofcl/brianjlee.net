@@ -1,0 +1,47 @@
+#banner {
+  background: url(/assets/img/banner.png) center center;
+  background-size: cover;
+  min-height: 39vw
+}
+
+iframe#medium-iframe {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 1px;
+  display: block;
+  margin: 0 auto;
+  max-height: 95vh;
+  height: 100%;
+  min-height: 70vh;
+  width: 95%;
+}
+
+@media (max-width: 544px) {
+  #projects-container {
+    column-count: 1
+  }
+}
+
+#blog-wrapper {
+  min-height: 110vh;
+}
+
+.contact-modal-loader {
+  cursor: pointer;
+}
+
+.btn {
+  cursor: pointer
+}
+
+.loader {
+  display: block;
+}
+
+.LI-profile-badge {
+  width: 250px;
+  margin: 0 auto;
+}
+
+.card-columns {
+  column-count: 2;
+}

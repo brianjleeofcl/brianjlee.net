@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Welcome...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Lato');
+      body {
+        height: 100vh;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-content: center
+      }
+      body > * {
+        font-family: 'Lato', sans-serif;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Thanks for visiting!</h2>
+    <p>Unfortunately the current version of my site is going under an emergency repair.</p>
+    <p>This page will automatically redirect to the previous version in <strong><span id="second">5</span> seconds</strong>.</p>
+    <script>
+      "use strict";(function(){var e=document.getElementById("second");var n=5;var t=setInterval(function(){n--;e.innerText=""+n;if(n==0){clearInterval(t);window.location.href="http://v1.brianjlee.net/"}},1e3)})();
+    </script>
+  </body>
+</html>
