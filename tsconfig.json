@@ -14,10 +14,7 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "typeRoots": [
-      "./typings"
-    ]
+    "noUnusedLocals": true
   },
   "exclude": [
     "node_modules"
