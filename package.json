@@ -23,8 +23,7 @@
     "npm": "5.3.0"
   },
   "scripts": {
-    "compile": "npx browserify public/assets/js/src/index.ts -p [tsify] | npx uglifyjs -m | tee public/assets/js/index.js",
-    "heroku-postbuild": "ls -l node_modules/@types"
+    "compile": "npx browserify public/assets/js/src/index.ts -p [tsify] | npx uglifyjs -m | tee public/assets/js/index.js"
   },
   "name": "www.brianjlee.net",
   "version": "2.0.0",
