@@ -1,4 +1,4 @@
-#banner {
+.banner {
   background: url(/assets/img/banner.png) center center;
   background-size: cover;
   min-height: 39vw
