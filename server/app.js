@@ -10,10 +10,10 @@ app.disable('x-powered-by');
 app.use(require('morgan')('dev'), require('body-parser').json());
 
 if (process.env.MAINTENANCE === 'true') {
-  app.use(express.static(path.join(__dirname, '..', '..', 'maintenance')))
+  app.use(express.static(path.join(__dirname, '..', 'maintenance')))
 }
 else {
-  app.use(express.static(path.join(__dirname, '..', '..', 'public')))
+  app.use(express.static(path.join(__dirname, '..', 'public')))
 }
 
 app.use('/api/v1',require('./v1/api'));
