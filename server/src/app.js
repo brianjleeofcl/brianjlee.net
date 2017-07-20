@@ -23,8 +23,9 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const { output, message } = err;
-  res.status(output.statusCode);
+  const { statusCode, message } = err.output.payload;
+  console.error(message)
+  res.status(statusCode);
   res.send(message);
 });
 

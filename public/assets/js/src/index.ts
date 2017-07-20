@@ -63,7 +63,7 @@ $contactModalBtn.on('click', () => {
     })
   }
     
-  function createReturnCallback(messageData: MessageData): Function {
+  function createReturnCallback(messageData: MessageData): () => void {
     return function() {
       const $newForm = new Contact(messageData.name, messageData.email, messageData.message)
       $('h5.modal-title').text('Message')

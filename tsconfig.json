@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "assets/js/src",
+    "outDir": "public/assets/js/src",
     "module": "commonjs",
     "target": "es5",
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "rootDir": "assets/js/src",
+    "rootDir": "public/assets/js/src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,

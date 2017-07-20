@@ -3,17 +3,32 @@
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "boom": "^5.1.0",
+    "browserify": "^14.4.0",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "morgan": "^1.8.2",
-    "title-case": "^2.1.1"
+    "nodemailer": "^4.0.1",
+    "title-case": "^2.1.1",
+    "tsify": "^3.0.1",
+    "uglify-js": "^3.0.25"
   },
   "devDependencies": {
     "@types/jquery": "^3.2.7",
-    "browserify": "^14.4.0",
     "foreman": "^2.0.0",
     "nodemon": "^1.11.0",
-    "tsify": "^3.0.1",
     "typescript": "^2.4.1"
-  }
+  },
+  "engines": {
+    "node": "8.1.4",
+    "npm": "5.3.0"
+  },
+  "scripts": {
+    "heroku-postbuild": "npx browserify public/assets/js/src/index.ts -p [tsify] | npx uglifyjs -m | tee public/assets/js/index.js | cat"
+  },
+  "name": "www.brianjlee.net",
+  "version": "2.0.0",
+  "main": "server/src/bin/www",
+  "repository": "https://github.com/brianjleeofcl/portfolio-site-v2.git",
+  "author": "Brian Lee <brianjleeofcl@gmail.com>",
+  "license": "MIT"
 }
