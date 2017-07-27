@@ -9,6 +9,11 @@ app.disable('x-powered-by');
 
 app.use(require('morgan')('dev'), require('body-parser').json());
 
+app.use((req, res, next) => {
+  res.set('X-Gon', 'Give-It-To-Ya')
+  next()
+})
+
 if (process.env.MAINTENANCE === 'true') {
   app.use(express.static(path.join(__dirname, '..', 'maintenance')))
 }
@@ -24,7 +29,6 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   const { statusCode, message } = err.output.payload;
-  console.error(message)
   res.status(statusCode);
   res.send(message);
 });

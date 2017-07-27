@@ -4,10 +4,21 @@ const boom = require('boom');
 const isEmail = require('isemail');
 const nodemailer = require('nodemailer');
 
-router.post('/send', (req, res, next) => {
+function trimInput(req, res, next) {
+  if (req.body) {
+    for (let prop in req.body) {
+      req.body[prop] = req.body[prop].trim()
+    }
+  }
+  next()
+}
+
+router.post('/send', trimInput, (req, res, next) => {
   const {email, message, name} = req.body
 
-  if (email.length === 0 || name.length === 0) return next(boom.badRequest('Empty Fields'))
+  if (email === undefined || message === undefined || name === undefined) return next(boom.badRequest('Missing Fields'))
+
+  if (email.length === 0 || name.length === 0 || message.length === 0) return next(boom.badRequest('Empty Fields'))
 
   const validEmail = isEmail.validate(email)
   if (!validEmail) return next(boom.badRequest('Invalid Email'))
@@ -32,7 +43,7 @@ router.post('/send', (req, res, next) => {
   transporter.sendMail(mailOption, (error, info) => {
     if (error) {
       console.error(error)
-      return next(boom.badImplementation(error))
+      return next(boom.badImplementation('Nodemailer error', error))
     }
     else {
       res.send('Successfully sent')
