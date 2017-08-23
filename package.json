@@ -25,8 +25,8 @@
     "npm": "5.3.0"
   },
   "scripts": {
-    "compile": "npx browserify src/index.ts -p [tsify] | npx uglifyjs -m | tee public/assets/js/index.js",
-    "dev": "npx watchify src/index.ts -p [tsify] -o public/assets/js/index.js -v",
+    "compile": "browserify src/index.ts -p [tsify] | uglifyjs -m | tee public/assets/js/index.js",
+    "dev": "watchify src/index.ts -p [tsify] -o public/assets/js/index.js -v",
     "heroku-postbuild": "npm run compile"
   },
   "name": "www.brianjlee.net",
