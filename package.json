@@ -27,6 +27,7 @@
   "scripts": {
     "compile": "browserify src/index.ts -p [tsify] | uglifyjs -m | tee public/assets/js/index.js",
     "dev": "watchify src/index.ts -p [tsify] -o public/assets/js/index.js -v",
+    "start-server": "node server/bin/www",
     "heroku-postbuild": "npm run compile"
   },
   "name": "www.brianjlee.net",
