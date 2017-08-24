@@ -9,15 +9,16 @@ iframe#medium-iframe {
   padding: 1px;
   display: block;
   margin: 0 auto;
-  max-height: 95vh;
-  height: 100%;
-  min-height: 70vh;
+  height: 95vh;
   width: 95%;
 }
 
 @media (max-width: 544px) {
   #projects-container {
     column-count: 1
+  }
+  iframe#medium-iframe {
+    height: 80vh !important;
   }
 }
 
@@ -46,7 +47,6 @@ iframe#medium-iframe {
   column-count: 2;
 }
 
-.card-f-align {
-  display: flex;
-  justify-content: space-between;
+.timestamp {
+  display: block;
 }

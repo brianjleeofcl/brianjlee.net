@@ -16,29 +16,33 @@ class CardBlock implements I$Element<HTMLDivElement> {
   private $title: JQuery<HTMLElement>;
   private $text: JQuery<HTMLElement>;
   private $github: JQuery<HTMLElement>;
-  constructor(title: string, desc: string, github: string) {
+  private $updated: JQuery<HTMLElement>;
+  constructor(title: string, desc: string, github: string, timestamp: string) {
     this.$title = $('<h4>').text(title).addClass('card-title');
     this.$text = $('<p>').text(desc).addClass('card-text');
     this.$github = $('<a>').text('GitHub').prop('href', github).addClass('card-link');
+    this.$updated = $('<small>').text(`Last updated ${timestamp}`).addClass('text-muted timestamp');
   }
 
   public render() {
-    return $('<div>').addClass('card-block').append(this.$title, this.$text, this.$github) as JQuery<HTMLDivElement>;
+    return $('<div>').addClass('card-block').append(
+      this.$title, 
+      this.$text, 
+      this.$github, 
+      this.$updated
+    ) as JQuery<HTMLDivElement>;
   }
 }
 
 class CardFooter implements I$Element<HTMLDivElement> {
   private $btn: JQuery<HTMLElement>;
-  private $updated: JQuery<HTMLElement>;
-  constructor(link: string, updatedAt: string) {
+  constructor(link: string) {
     this.$btn = $('<a>') as JQuery<HTMLAnchorElement>;
     this.$btn.addClass('btn btn-primary').prop('href', link).text('Go to site');
-    const relTime = moment(updatedAt).fromNow();
-    this.$updated = $('<small>').text(`Last updated ${relTime}`).addClass('text-muted d-flex align-items-center');
   }
 
   public render() {
-    return $('<div>').addClass('card-footer card-f-align').append(this.$btn, this.$updated) as JQuery<HTMLDivElement>;
+    return $('<div>').addClass('card-footer').append(this.$btn) as JQuery<HTMLDivElement>;
   }
 }
 
@@ -60,8 +64,8 @@ export class Card implements I$Element<HTMLDivElement> {
     img?: string
   ) {
     if (img) this.$image = new CardImg(img, `${title} image`).render();
-    this.$block = new CardBlock(title, desc, url.github).render();
-    this.$footer = new CardFooter(url.site, updatedAt).render();
+    this.$block = new CardBlock(title, desc, url.github, moment(updatedAt).fromNow()).render();
+    this.$footer = new CardFooter(url.site).render();
   }
 
   public render() {
