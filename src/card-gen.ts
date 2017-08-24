@@ -1,27 +1,44 @@
-class CardImg {
-  public img: JQuery<HTMLImageElement>
-  constructor(src: string, alt: string){
-    this.img = $('<img>').prop({src, alt}).addClass('card-img-top img-fluid') as JQuery<HTMLImageElement>
+interface I$Element<T extends HTMLElement> {
+  render(): JQuery<T>;
+}
+
+class CardImg implements I$Element<HTMLImageElement> {
+  constructor(private src: string, private alt: string){ };
+
+  public render() {
+    const src = this.src;
+    const alt = this.alt;
+    return $('<img>').prop({src, alt}).addClass('card-img-top img-fluid') as JQuery<HTMLImageElement>;
   }
 }
 
-class CardBlock {
-  public div: JQuery<HTMLDivElement>
+class CardBlock implements I$Element<HTMLDivElement> {
+  private $title: JQuery<HTMLElement>;
+  private $text: JQuery<HTMLElement>;
+  private $github: JQuery<HTMLElement>;
   constructor(title: string, desc: string, github: string) {
-    const $title = $('<h4>').text(title).addClass('card-title');
-    const $text = $('<p>').text(desc).addClass('card-text');
-    const $github = $('<a>').text('GitHub').prop('href', github).addClass('card-link')
-    this.div = $('<div>').addClass('card-block').append($title, $text, $github) as JQuery<HTMLDivElement>
+    this.$title = $('<h4>').text(title).addClass('card-title');
+    this.$text = $('<p>').text(desc).addClass('card-text');
+    this.$github = $('<a>').text('GitHub').prop('href', github).addClass('card-link');
   }
+
+  public render() {
+    return $('<div>').addClass('card-block').append(this.$title, this.$text, this.$github) as JQuery<HTMLDivElement>
+  }
+
 }
 
-class CardFooter {
-  public div: JQuery<HTMLDivElement>
+class CardFooter implements I$Element<HTMLDivElement> {
+  private $footer: JQuery<HTMLElement>;
+  private $button: JQuery<HTMLElement>;
   constructor(link: string) {
-    const $footer: JQuery<HTMLDivElement> = $('<div>').addClass('card-footer') as JQuery<HTMLDivElement>
-    const $button: JQuery<HTMLAnchorElement> = $('<a>') as JQuery<HTMLAnchorElement>
-    $button.addClass('btn btn-primary').prop('href', link).text('Go to site')
-    this.div = $footer.append($button);
+    this.$footer = $('<div>').addClass('card-footer') as JQuery<HTMLDivElement>
+    this.$button = $('<a>') as JQuery<HTMLAnchorElement>
+    this.$button.addClass('btn btn-primary').prop('href', link).text('Go to site');
+  }
+
+  public render() {
+    return this.$footer.append(this.$button) as JQuery<HTMLDivElement>;
   }
 }
 
@@ -30,25 +47,24 @@ export interface URLs {
   site: string
 }
 
-export class Card {
-  public div: JQuery<HTMLDivElement>
-  
-  constructor(title: string, desc: string, url: URLs, img? : string) {
-    const $card = img ? this.initimg(title, desc, url, img) : this.init(title, desc, url) 
-    this.div = $card as JQuery<HTMLDivElement>
-  }
+export class Card implements I$Element<HTMLDivElement> {
+  constructor(private title: string, private desc: string, private url: URLs, private img? : string) { }
 
   private initimg(title: string, desc: string, url:URLs, img: string): JQuery<HTMLDivElement> {
     const $card: JQuery<HTMLDivElement> = $('<div>').addClass('card mb-3') as JQuery<HTMLDivElement>
-    const $image: JQuery<HTMLImageElement> = new CardImg(img, `${title} image`).img
-    const $block: JQuery<HTMLDivElement> = new CardBlock(title, desc, url.github).div
-    const $footer: JQuery<HTMLDivElement> = new CardFooter(url.site).div
+    const $image: JQuery<HTMLImageElement> = new CardImg(img, `${title} image`).render();
+    const $block: JQuery<HTMLDivElement> = new CardBlock(title, desc, url.github).render();
+    const $footer: JQuery<HTMLDivElement> = new CardFooter(url.site).render();
     return $card.append($image, $block, $footer)
   }
   private init(title: string, desc: string, url: URLs): JQuery<HTMLDivElement> {
     const $card: JQuery<HTMLDivElement> = $('<div>').addClass('card mb-3') as JQuery<HTMLDivElement>
-    const $block: JQuery<HTMLDivElement> = new CardBlock(title, desc, url.github).div
-    const $footer: JQuery<HTMLDivElement> = new CardFooter(url.site).div
-    return $card.append($block, $footer)
+    const $block: JQuery<HTMLDivElement> = new CardBlock(title, desc, url.github).render();
+    const $footer: JQuery<HTMLDivElement> = new CardFooter(url.site).render();
+    return $card.append($block, $footer);
+  }
+
+  public render() {
+    return this.img ? this.initimg(this.title, this.desc, this.url, this.img) : this.init(this.title, this.desc, this.url); 
   }
 }

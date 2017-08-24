@@ -18,7 +18,7 @@ $.ajax('/api/v1/projects/', {
 }).then(data => {
   const projects: Project[] = data;
   $projects.siblings('object.loader').remove();
-  $projects.append(...projects.map(({title, desc, url, img}) => new Card(title, desc, url, img).div));
+  $projects.append(...projects.map(({title, desc, url, img}) => new Card(title, desc, url, img).render()));
 })
 
 const $contactModalBtn: JQuery<HTMLElement> = $('.contact-modal-loader')
