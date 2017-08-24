@@ -1,6 +1,4 @@
-interface I$Element<T extends HTMLElement> {
-  render(): JQuery<T>;
-}
+import { I$Element } from './interface';
 
 class CardImg implements I$Element<HTMLImageElement> {
   constructor(private src: string, private alt: string){ };
