@@ -6,3 +6,9 @@ For details on API server, go to [server/readme.md](https://github.com/brianjlee
 
 Client side JavaScript written using TypeScript. Bundled during server deployment using Browserify and Uglify.
 
+## Update log
+
+#### 2.1 (current)
+- project previews now fetch images from meta tags if not provided separately
+- project now provides timestamp for last updated time
+- overall cleanup of OOP conventions
