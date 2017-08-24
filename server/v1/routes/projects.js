@@ -25,13 +25,13 @@ router.get('/', (req, res, next) => {
     const imgPromises = [];
 
     projectsJSON = results.map(({data}, i) => {
-      const { html_url, homepage, name, description } = data
+      const { html_url, homepage, name, description, updated_at } = data
       const title = titlify(name);
       const url = {
         github: html_url,
         site: homepage
       }
-      const res = { title, desc: description, url };
+      const res = { title, desc: description, url, updated_at };
 
       if (img[i]) imgPromises[i] = img[i];
       else imgPromises[i] = getMetaTagPromise(homepage);

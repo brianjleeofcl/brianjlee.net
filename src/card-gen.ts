@@ -1,7 +1,9 @@
 import { I$Element } from './interface';
 
+import * as moment from 'moment';
+
 class CardImg implements I$Element<HTMLImageElement> {
-  constructor(private src: string, private alt: string){ };
+  constructor(private src: string | null, private alt: string){ };
 
   public render() {
     const src = this.src;
@@ -23,20 +25,22 @@ class CardBlock implements I$Element<HTMLDivElement> {
   public render() {
     return $('<div>').addClass('card-block').append(this.$title, this.$text, this.$github) as JQuery<HTMLDivElement>
   }
-
 }
 
 class CardFooter implements I$Element<HTMLDivElement> {
   private $footer: JQuery<HTMLElement>;
   private $button: JQuery<HTMLElement>;
-  constructor(link: string) {
-    this.$footer = $('<div>').addClass('card-footer') as JQuery<HTMLDivElement>
+  private $updated: JQuery<HTMLElement>;
+  constructor(link: string, updated_at: string) {
+    this.$footer = $('<div>').addClass('card-footer d-flex justify-content-between') as JQuery<HTMLDivElement>
     this.$button = $('<a>') as JQuery<HTMLAnchorElement>
     this.$button.addClass('btn btn-primary').prop('href', link).text('Go to site');
+    const relTime = moment(updated_at).fromNow()
+    this.$updated = $('<small>').text(`Last updated ${relTime}`).addClass('text-muted d-flex align-items-center')
   }
 
   public render() {
-    return this.$footer.append(this.$button) as JQuery<HTMLDivElement>;
+    return this.$footer.append(this.$button, this.$updated) as JQuery<HTMLDivElement>;
   }
 }
 
@@ -46,23 +50,19 @@ export interface URLs {
 }
 
 export class Card implements I$Element<HTMLDivElement> {
-  constructor(private title: string, private desc: string, private url: URLs, private img? : string) { }
-
-  private initimg(title: string, desc: string, url:URLs, img: string): JQuery<HTMLDivElement> {
-    const $card: JQuery<HTMLDivElement> = $('<div>').addClass('card mb-3') as JQuery<HTMLDivElement>
-    const $image: JQuery<HTMLImageElement> = new CardImg(img, `${title} image`).render();
-    const $block: JQuery<HTMLDivElement> = new CardBlock(title, desc, url.github).render();
-    const $footer: JQuery<HTMLDivElement> = new CardFooter(url.site).render();
-    return $card.append($image, $block, $footer)
-  }
-  private init(title: string, desc: string, url: URLs): JQuery<HTMLDivElement> {
-    const $card: JQuery<HTMLDivElement> = $('<div>').addClass('card mb-3') as JQuery<HTMLDivElement>
-    const $block: JQuery<HTMLDivElement> = new CardBlock(title, desc, url.github).render();
-    const $footer: JQuery<HTMLDivElement> = new CardFooter(url.site).render();
-    return $card.append($block, $footer);
-  }
+  constructor(
+    private title: string, 
+    private desc: string, 
+    private url: URLs, 
+    private updated_at: string, 
+    private img? : string
+  ) { }
 
   public render() {
-    return this.img ? this.initimg(this.title, this.desc, this.url, this.img) : this.init(this.title, this.desc, this.url); 
+    const $card: JQuery<HTMLDivElement> = $('<div>').addClass('card mb-3') as JQuery<HTMLDivElement>
+    const $image: JQuery<HTMLImageElement> | null = this.img ? new CardImg(this.img, `${this.title} image`).render() : null;
+    const $block: JQuery<HTMLDivElement> = new CardBlock(this.title, this.desc, this.url.github).render();
+    const $footer: JQuery<HTMLDivElement> = new CardFooter(this.url.site, this.updated_at).render();
+    return $image ? $card.append($image, $block, $footer) : $card.append($block, $footer);
   }
 }

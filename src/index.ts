@@ -8,6 +8,7 @@ interface Project {
   title: string
   desc: string
   url: URLs
+  updated_at: string
   img?: string
 }
 
@@ -18,7 +19,7 @@ $.ajax('/api/v1/projects/', {
 }).then(data => {
   const projects: Project[] = data;
   $projects.siblings('object.loader').remove();
-  $projects.append(...projects.map(({title, desc, url, img}) => new Card(title, desc, url, img).render()));
+  $projects.append(...projects.map(({title, desc, url, updated_at, img}) => new Card(title, desc, url, updated_at, img).render()));
 })
 
 const $contactModalBtn: JQuery<HTMLElement> = $('.contact-modal-loader')

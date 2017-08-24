@@ -8,6 +8,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "isemail": "^3.0.0",
+    "moment": "^2.18.1",
     "morgan": "^1.8.2",
     "nodemailer": "^4.0.1",
     "title-case": "^2.1.1",
