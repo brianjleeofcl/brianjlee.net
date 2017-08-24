@@ -1,7 +1,7 @@
 import { Button, Btn } from './button';
 import { I$Element } from './interface';
 
-export class CloseIcon extends Button implements I$Element<HTMLButtonElement>{
+export class CloseIcon extends Button implements I$Element<HTMLButtonElement> {
   constructor() {
     super($('<span>').html('&times;').prop('aria-hidden', true));
   }

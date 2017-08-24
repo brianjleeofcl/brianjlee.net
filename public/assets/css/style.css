@@ -45,3 +45,8 @@ iframe#medium-iframe {
 .card-columns {
   column-count: 2;
 }
+
+.card-f-align {
+  display: flex;
+  justify-content: space-between;
+}

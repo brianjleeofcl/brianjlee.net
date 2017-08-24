@@ -10,7 +10,7 @@ class ModalHeader implements I$Element<HTMLDivElement> {
   }
 
   render() {
-    return $('<div>').addClass('modal-header').append(this.$title, this.$close) as JQuery<HTMLDivElement>
+    return $('<div>').addClass('modal-header').append(this.$title, this.$close) as JQuery<HTMLDivElement>;
   }
 }
 

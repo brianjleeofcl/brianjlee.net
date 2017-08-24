@@ -5,37 +5,40 @@ import { Btn } from './button';
 import { CloseBtn } from './close';
 
 interface Project {
-  title: string
-  desc: string
-  url: URLs
-  updated_at: string
-  img?: string
+  title: string;
+  desc: string;
+  url: URLs;
+  updated_at: string;
+  img?: string;
 }
 
 const $projects: JQuery<HTMLElement> = $('#projects-container');
 
 $.ajax('/api/v1/projects/', {
   method: 'GET'
-}).then(data => {
-  const projects: Project[] = data;
+}).then((data: Project[]) => {
   $projects.siblings('object.loader').remove();
-  $projects.append(...projects.map(({title, desc, url, updated_at, img}) => new Card(title, desc, url, updated_at, img).render()));
-})
 
-const $contactModalBtn: JQuery<HTMLElement> = $('.contact-modal-loader')
-const $contactModal: JQuery<HTMLElement> = $('#contact-modal')
+  for (let project of data) {
+    const {title, desc, url, updated_at, img} = project;
+    new Card(title, desc, url, updated_at, img).render().appendTo($projects);
+  }
+});
+
+const $contactModalBtn: JQuery<HTMLElement> = $('.contact-modal-loader');
+const $contactModal: JQuery<HTMLElement> = $('#contact-modal');
 
 $contactModalBtn.on('click', () => {
   const $contactForm = new Contact();
   const $modal = new Modal('Message', [$contactForm.$formElement], [$contactForm.$button]).render();
 
-  attachListeners($contactForm)
-  $contactModal.empty().append($modal)
+  attachListeners($contactForm);
+  $contactModal.empty().append($modal);
 
   function attachListeners(contact: Contact): void {
     let messageData: MessageData;
     contact.on('POST_SENT', () => {
-      messageData = contact.data
+      messageData = contact.data;
       $('div.modal-body').append(
         $('<object>').attr({data: '/assets/img/loading.svg'}).addClass('loader mx-auto')
       );
@@ -52,7 +55,7 @@ $contactModalBtn.on('click', () => {
       $('div.modal-footer').empty().append((new CloseBtn()).render());
     })
     .on('POST_FAIL', res => {
-      $('h5.modal-title').text('Uh-oh!')
+      $('h5.modal-title').text('Uh-oh!');
       $('div.modal-body').empty().append(
         $('<div>').addClass('alert alert-danger').append(
           $('<h6>').text(`${res.status}: ${res.statusText}`),
@@ -71,6 +74,6 @@ $contactModalBtn.on('click', () => {
       $('div.modal-body').empty().append($newForm.$formElement);
       $('div.modal-footer').empty().append($newForm.$button);
       attachListeners($newForm);
-    }
+    };
   }
-})
+});

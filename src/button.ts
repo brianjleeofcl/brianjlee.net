@@ -1,14 +1,14 @@
 import { I$Element } from './interface';
 
 export class Button implements I$Element<HTMLButtonElement> {
-  private $button: JQuery<HTMLButtonElement>
+  private $button: JQuery<HTMLButtonElement>;
   constructor(text: string | JQuery<HTMLElement>) {
-    this.$button = $('<button>').attr('type', 'button') as JQuery<HTMLButtonElement>
-    typeof text == 'string' ? this.$button.text(text) : this.$button.append(text)
+    this.$button = $('<button>').attr('type', 'button') as JQuery<HTMLButtonElement>;
+    typeof text === 'string' ? this.$button.text(text) : this.$button.append(text);
   }
 
   render() {
-    return this.$button
+    return this.$button;
   }
 }
 

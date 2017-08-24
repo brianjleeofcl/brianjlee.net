@@ -3,7 +3,7 @@ import { I$Element } from './interface';
 import * as moment from 'moment';
 
 class CardImg implements I$Element<HTMLImageElement> {
-  constructor(private src: string | null, private alt: string){ };
+  constructor(private src: string | null, private alt: string) { }
 
   public render() {
     const src = this.src;
@@ -23,28 +23,28 @@ class CardBlock implements I$Element<HTMLDivElement> {
   }
 
   public render() {
-    return $('<div>').addClass('card-block').append(this.$title, this.$text, this.$github) as JQuery<HTMLDivElement>
+    return $('<div>').addClass('card-block').append(this.$title, this.$text, this.$github) as JQuery<HTMLDivElement>;
   }
 }
 
 class CardFooter implements I$Element<HTMLDivElement> {
-  private $button: JQuery<HTMLElement>;
+  private $btn: JQuery<HTMLElement>;
   private $updated: JQuery<HTMLElement>;
-  constructor(link: string, updated_at: string) {
-    this.$button = $('<a>') as JQuery<HTMLAnchorElement>
-    this.$button.addClass('btn btn-primary').prop('href', link).text('Go to site');
-    const relTime = moment(updated_at).fromNow()
-    this.$updated = $('<small>').text(`Last updated ${relTime}`).addClass('text-muted d-flex align-items-center')
+  constructor(link: string, updatedAt: string) {
+    this.$btn = $('<a>') as JQuery<HTMLAnchorElement>;
+    this.$btn.addClass('btn btn-primary').prop('href', link).text('Go to site');
+    const relTime = moment(updatedAt).fromNow();
+    this.$updated = $('<small>').text(`Last updated ${relTime}`).addClass('text-muted d-flex align-items-center');
   }
 
   public render() {
-    return $('<div>').addClass('card-footer d-flex justify-content-between').append(this.$button, this.$updated) as JQuery<HTMLDivElement>;
+    return $('<div>').addClass('card-footer card-f-align').append(this.$btn, this.$updated) as JQuery<HTMLDivElement>;
   }
 }
 
 export interface URLs {
-  github: string
-  site: string
+  github: string;
+  site: string;
 }
 
 export class Card implements I$Element<HTMLDivElement> {
@@ -56,12 +56,12 @@ export class Card implements I$Element<HTMLDivElement> {
     title: string, 
     desc: string, 
     url: URLs, 
-    updated_at: string, 
-    img? : string
+    updatedAt: string, 
+    img?: string
   ) {
     if (img) this.$image = new CardImg(img, `${title} image`).render();
     this.$block = new CardBlock(title, desc, url.github).render();
-    this.$footer = new CardFooter(url.site, updated_at).render();
+    this.$footer = new CardFooter(url.site, updatedAt).render();
   }
 
   public render() {
