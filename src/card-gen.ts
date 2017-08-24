@@ -28,11 +28,9 @@ class CardBlock implements I$Element<HTMLDivElement> {
 }
 
 class CardFooter implements I$Element<HTMLDivElement> {
-  private $footer: JQuery<HTMLElement>;
   private $button: JQuery<HTMLElement>;
   private $updated: JQuery<HTMLElement>;
   constructor(link: string, updated_at: string) {
-    this.$footer = $('<div>').addClass('card-footer d-flex justify-content-between') as JQuery<HTMLDivElement>
     this.$button = $('<a>') as JQuery<HTMLAnchorElement>
     this.$button.addClass('btn btn-primary').prop('href', link).text('Go to site');
     const relTime = moment(updated_at).fromNow()
@@ -40,7 +38,7 @@ class CardFooter implements I$Element<HTMLDivElement> {
   }
 
   public render() {
-    return this.$footer.append(this.$button, this.$updated) as JQuery<HTMLDivElement>;
+    return $('<div>').addClass('card-footer d-flex justify-content-between').append(this.$button, this.$updated) as JQuery<HTMLDivElement>;
   }
 }
 
@@ -50,19 +48,25 @@ export interface URLs {
 }
 
 export class Card implements I$Element<HTMLDivElement> {
+  private $image?: JQuery<HTMLImageElement>;
+  private $block: JQuery<HTMLDivElement>;
+  private $footer: JQuery<HTMLDivElement>;
+
   constructor(
-    private title: string, 
-    private desc: string, 
-    private url: URLs, 
-    private updated_at: string, 
-    private img? : string
-  ) { }
+    title: string, 
+    desc: string, 
+    url: URLs, 
+    updated_at: string, 
+    img? : string
+  ) {
+    if (img) this.$image = new CardImg(img, `${title} image`).render();
+    this.$block = new CardBlock(title, desc, url.github).render();
+    this.$footer = new CardFooter(url.site, updated_at).render();
+  }
 
   public render() {
-    const $card: JQuery<HTMLDivElement> = $('<div>').addClass('card mb-3') as JQuery<HTMLDivElement>
-    const $image: JQuery<HTMLImageElement> | null = this.img ? new CardImg(this.img, `${this.title} image`).render() : null;
-    const $block: JQuery<HTMLDivElement> = new CardBlock(this.title, this.desc, this.url.github).render();
-    const $footer: JQuery<HTMLDivElement> = new CardFooter(this.url.site, this.updated_at).render();
-    return $image ? $card.append($image, $block, $footer) : $card.append($block, $footer);
+    return this.$image 
+      ? $('<div>').addClass('card mb-3').append(this.$image, this.$block, this.$footer) as JQuery<HTMLDivElement>
+      : $('<div>').addClass('card mb-3').append(this.$block, this.$footer) as JQuery<HTMLDivElement>;
   }
 }
