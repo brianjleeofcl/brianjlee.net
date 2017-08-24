@@ -1,15 +1,23 @@
-export class Button {
-  public btn: JQuery<HTMLButtonElement>;
+import { I$Element } from './interface';
+
+export class Button implements I$Element<HTMLButtonElement> {
+  private $button: JQuery<HTMLButtonElement>
   constructor(text: string | JQuery<HTMLElement>) {
-    const $button = $('<button>').attr('type', 'button')
-    typeof text == 'string' ? $button.text(text) : $button.append(text)
-    this.btn = $button as JQuery<HTMLButtonElement>
+    this.$button = $('<button>').attr('type', 'button') as JQuery<HTMLButtonElement>
+    typeof text == 'string' ? this.$button.text(text) : this.$button.append(text)
+  }
+
+  render() {
+    return this.$button
   }
 }
 
-export class Btn extends Button {
+export class Btn extends Button implements I$Element<HTMLButtonElement> {
   constructor(text: string) {
-    super(text)
-    this.btn.addClass('btn')
+    super(text);
+  }
+
+  render() {
+    return super.render().addClass('btn');
   }
 }

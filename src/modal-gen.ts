@@ -1,37 +1,51 @@
 import { CloseIcon } from './close';
+import { I$Element } from './interface';
 
-class ModalHeader {
-  public div: JQuery<HTMLDivElement>;
+class ModalHeader implements I$Element<HTMLDivElement> {
+  private $close = new CloseIcon().render();
+  private $title: JQuery<HTMLElement>;
+
   constructor(title: string) {
-    const $div = $('<div>').addClass('modal-header');
-    const $title = $('<h5>').addClass('modal-title').text(title);
-    const $close = new CloseIcon().btn;
-    this.div = $div.append($title, $close) as JQuery<HTMLDivElement>;
+    this.$title = $('<h5>').addClass('modal-title').text(title);
+  }
+
+  render() {
+    return $('<div>').addClass('modal-header').append(this.$title, this.$close) as JQuery<HTMLDivElement>
   }
 }
 
-class ModalBody {
-  public div: JQuery<HTMLDivElement>;
+class ModalBody implements I$Element<HTMLDivElement> {
+  private body: JQuery<HTMLElement>[];
   constructor(...body: JQuery<HTMLElement>[]) {
-    this.div = $('<div>').addClass('modal-body').append(...body) as JQuery<HTMLDivElement>;
+    this.body = body;
+  }
+
+  render() {
+    return $('<div>').addClass('modal-body').append(...this.body) as JQuery<HTMLDivElement>;
   }
 }
 
-class ModalFooter {
-  public div: JQuery<HTMLDivElement>;
+class ModalFooter implements I$Element<HTMLDivElement> {
+  private buttons: JQuery<HTMLElement>[];
   constructor(...buttons: JQuery<HTMLElement>[]) {
-    this.div = $('<div>').addClass('modal-footer').append(...buttons) as JQuery<HTMLDivElement>;
+    this.buttons = buttons;
+  }
+
+  render() {
+    return $('<div>').addClass('modal-footer').append(...this.buttons) as JQuery<HTMLDivElement>;
   }
 }
 
-export class Modal {
-  public modal: JQuery<HTMLDivElement>;
+export class Modal implements I$Element<HTMLDivElement> {
+  private content: JQuery<HTMLElement>;
   constructor(title: string, body: JQuery<HTMLElement>[], buttons: JQuery<HTMLElement>[]) {
-    const $header: JQuery<HTMLDivElement> = new ModalHeader(title).div;
-    const $body: JQuery<HTMLDivElement> = new ModalBody(...body).div;
-    const $footer: JQuery<HTMLDivElement> = new ModalFooter(...buttons).div;
-    const $modalContent = $('<div>').addClass('modal-content').append($header, $body, $footer);
-    const $modalDialog = $('<div>').addClass('modal-dialog').append($modalContent);
-    this.modal = $modalDialog as JQuery<HTMLDivElement>;
+    const $header: JQuery<HTMLDivElement> = new ModalHeader(title).render();
+    const $body: JQuery<HTMLDivElement> = new ModalBody(...body).render();
+    const $footer: JQuery<HTMLDivElement> = new ModalFooter(...buttons).render();
+    this.content = $('<div>').addClass('modal-content').append($header, $body, $footer);
+  }
+
+  render() {
+    return $('<div>').addClass('modal-dialog').append(this.content) as JQuery<HTMLDivElement>;
   }
 }

@@ -1,16 +1,14 @@
 import { Btn } from './button';
+import { I$Element } from './interface';
 
-class FormGroup {
-  public field: JQuery<HTMLElement>
-  private input: JQuery<HTMLElement>
+class FormGroup implements I$Element<HTMLFieldSetElement> {
+  private $input: JQuery<HTMLElement>;
+  private $label: JQuery<HTMLElement>;
   constructor(type: string, label: string, value?: string) {
     const $input = type === 'message' ? $('<textarea>').attr('rows', '3') : $('<input>').attr({type});
     if (value) $input.val(value);
-    this.input = $input;
-    $input.addClass('form-control');
-    const $label = $('<label>').text(label);
-    const $fs = $('<fieldset>').addClass('form-group').append($label, $input);
-    this.field = $fs;
+    this.$input = $input.addClass('form-control');
+    this.$label = $('<label>').text(label);
   }
 
   get valid(): boolean {
@@ -18,11 +16,15 @@ class FormGroup {
   }
 
   get data(): string {
-    return this.input.val() as string
+    return this.$input.val() as string
+  }
+
+  public render() {
+    return $('<fieldset>').addClass('form-group').append(this.$label, this.$input) as JQuery<HTMLFieldSetElement>
   }
 }
 
-class Form {
+class Form implements I$Element<HTMLFormElement> {
   public name: FormGroup
   public email: FormGroup
   public message: FormGroup
@@ -31,14 +33,23 @@ class Form {
     this.email = new FormGroup('email', 'E-mail', email);
     this.message = new FormGroup('message', 'Message', message);
   }
+
+  public render() {
+    return $('<form>').append(
+      this.name.render(), 
+      this.email.render(), 
+      this.message.render()
+    ) as JQuery<HTMLFormElement>;
+  }
 }
 
-class SubmitBtn extends Btn {
-  public btn: JQuery<HTMLButtonElement>;
-  constructor(fn: Function) {
-    super('Submit')
-    this.btn.on('click', fn as JQuery.EventHandler<any, any>)
-    this.btn.addClass('btn-primary mx-auto').attr({type: 'button'})
+class SubmitBtn extends Btn implements I$Element<HTMLButtonElement> {
+  constructor(private clickHandler: Function) {
+    super('Submit');
+  }
+
+  public render() {
+    return super.render().on('click', this.clickHandler as JQuery.EventHandler<any, any>).addClass('btn-primary mx-auto').attr({type: 'button'})
   }
 }
 
@@ -48,31 +59,30 @@ interface EventRecord {
 
 export class Contact {
   private form: Form;
-  public formElement: JQuery<HTMLElement>
-  public button: JQuery<HTMLElement>;
+  public $formElement: JQuery<HTMLFormElement>;
+  public $button: JQuery<HTMLButtonElement>;
   private eventRecord: EventRecord;
 
   constructor(name?: string, email?: string, message?: string) {
     this.form = new Form(name, email, message);
-    const $form = $('<form>').append(this.form.name.field, this.form.email.field, this.form.message.field);
-    this.formElement = $form;
+    this.$formElement = this.form.render();
     this.submit = this.submit.bind(this);
-    this.button = new SubmitBtn(this.submit).btn;
+    this.$button = new SubmitBtn(this.submit).render();
     this.eventRecord = {};
   }
 
   public on(event: string, fn: (...data: any[]) => void ): this {
-    if (this.eventRecord[event]) this.eventRecord[event].push(fn)
-    else this.eventRecord[event] = [fn]
-    return this
+    if (this.eventRecord[event]) this.eventRecord[event].push(fn);
+    else this.eventRecord[event] = [fn];
+    return this;
   }
 
   private emit(event: string, ...data: any[]): void {
-    for (let fn of this.eventRecord[event]) fn(...data)
+    for (let fn of this.eventRecord[event]) fn(...data);
   }
 
   private submit(): void {
-    const data: string = JSON.stringify(this.returnData())
+    const data: string = JSON.stringify(this.data);
 
     $.ajax('/api/v1/email/send', { 
       method: 'POST', 
@@ -83,7 +93,7 @@ export class Contact {
     .then(() => this.emit('POST_SUCCESS'), res => this.emit('POST_FAIL', res))
   }
 
-  public returnData(): MessageData {
+  get data(): MessageData {
     return { 
       name: this.form.name.data, 
       email: this.form.email.data,
@@ -98,10 +108,12 @@ export interface MessageData {
   message: string
 }
 
-export class ReturnBtn extends Btn{
-  constructor (fn: Function) {
+export class ReturnBtn extends Btn implements I$Element<HTMLButtonElement> {
+  constructor (private clickHandler: Function) {
     super('Go back');
-    this.btn.addClass('btn-primary');
-    this.btn.click(fn as JQuery.EventHandler<any>)
+  }
+
+  public render() {
+    return super.render().addClass('btn-primary').click(this.clickHandler as JQuery.EventHandler<any>)
   }
 }
